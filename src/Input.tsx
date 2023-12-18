@@ -1,5 +1,5 @@
+import { StyleProp, StyleSheet, View, ViewStyle } from "react-native";
 import {
-  useForm,
   Controller,
   Control,
   RegisterOptions,
@@ -7,7 +7,6 @@ import {
 } from "react-hook-form";
 import { TextInput, Text } from "react-native-paper";
 import { FormType } from "./Form";
-import { StyleProp, TextStyle, View, ViewStyle } from "react-native";
 
 type Props = {
   control: Control<FormType>;
@@ -51,11 +50,11 @@ export const Input = ({
         )}
         name={label}
       />
-      {error && (
-        <Text style={{ color: "red", fontSize: 10, fontStyle: "italic" }}>
-          {error}
-        </Text>
-      )}
+      {error && <Text style={styles.errorText}>{error}</Text>}
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  errorText: { color: "red", fontSize: 10, fontStyle: "italic" },
+});

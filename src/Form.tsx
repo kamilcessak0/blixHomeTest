@@ -1,10 +1,10 @@
-import { View, ScrollView, SafeAreaView, StyleSheet } from "react-native";
-import { Input } from "./Input";
-import { Checkbox, Text, Button } from "react-native-paper";
-import { useForm } from "react-hook-form";
 import { useState } from "react";
+import { View, ScrollView, SafeAreaView, StyleSheet } from "react-native";
 import RNPickerSelect from "react-native-picker-select";
-import { IconButton } from "react-native-paper";
+import { IconButton, Checkbox, Text, Button } from "react-native-paper";
+import { useForm } from "react-hook-form";
+
+import { Input } from "./Input";
 
 export type FormType = {
   userName: string;
@@ -19,6 +19,7 @@ export const Form = () => {
   const [accountType, setSccountType] = useState<"manual" | "advanced">(
     "manual"
   );
+
   const {
     control,
     handleSubmit,
@@ -28,6 +29,8 @@ export const Form = () => {
     clearErrors,
   } = useForm<FormType>();
 
+  const { mainContainer, customInputContainer, formContainer, pickerStyle } =
+    styles;
   const ssl = watch("sslEnabled");
 
   const onSubmit = (data) => {
@@ -52,15 +55,8 @@ export const Form = () => {
   };
 
   return (
-    <SafeAreaView
-      style={{
-        flex: 1,
-        width: "100%",
-        borderColor: "red",
-        borderWidth: 1,
-      }}
-    >
-      <ScrollView contentContainerStyle={{ padding: 16, gap: 16 }}>
+    <SafeAreaView style={mainContainer}>
+      <ScrollView contentContainerStyle={formContainer}>
         <Text>{"Simple form by Kamil Cessak :)"}</Text>
         <RNPickerSelect
           onValueChange={(value) => setSccountType(value)}
@@ -78,8 +74,8 @@ export const Form = () => {
             },
           ]}
           style={{
-            inputIOS: styles.pickerStyle,
-            inputAndroid: styles.pickerStyle,
+            inputIOS: pickerStyle,
+            inputAndroid: pickerStyle,
           }}
           Icon={() => <IconButton icon="chevron-down" />}
         />
@@ -137,7 +133,7 @@ export const Form = () => {
           />
         )}
         {accountType === "advanced" && (
-          <View style={{ flexDirection: "row", alignItems: "center" }}>
+          <View style={customInputContainer}>
             <Input
               label="port"
               control={control}
@@ -152,7 +148,7 @@ export const Form = () => {
               error={errors?.port?.message}
               inputContainerStyle={{ width: "30%" }}
             />
-            <View style={{ flexDirection: "row", alignItems: "center" }}>
+            <View style={customInputContainer}>
               <Checkbox.Android
                 status={ssl ? "checked" : "unchecked"}
                 onPress={() => setValue("sslEnabled", !ssl)}
@@ -176,5 +172,11 @@ const styles = StyleSheet.create({
     borderColor: "black",
     borderRadius: 4,
     padding: 16,
+  },
+  customInputContainer: { flexDirection: "row", alignItems: "center" },
+  formContainer: { padding: 16, gap: 16 },
+  mainContainer: {
+    flex: 1,
+    width: "100%",
   },
 });
